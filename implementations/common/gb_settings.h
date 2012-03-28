@@ -1,0 +1,9 @@
+#pragma once
+
+#define GB_CANVAS_WIDTH 1920
+#define GB_CANVAS_HEIGHT 1200
+#define GB_CANVAS_CAIRO_FORMAT CAIRO_FORMAT_ARGB32
+#define GB_CANVAS_AGG_FORMAT agg::pixfmt_argb32
+#define GB_CANVAS_BPP 4
+
+
