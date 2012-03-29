@@ -18,7 +18,7 @@ LDFLAGS += -L$(GRAPHICS_BENCH_ROOT)/utils
 OUTPUT = gb_agg_main
 
 OBJECTS = gb_agg_main.o gb_agg_lines.o
-COMMON_OBJECTS = $(COMMON_DIR)/gb_lines.o $(COMMON_DIR)/gb_box.o
+COMMON_OBJECTS = $(COMMON_DIR)/gb_lines.o $(COMMON_DIR)/gb_box.o $(COMMON_DIR)/gb_benchmark.o
 
 all : common $(OBJECTS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o gb_agg_main $(OBJECTS) $(COMMON_OBJECTS) $(LIBS)
@@ -34,5 +34,5 @@ gb_agg_lines.o : gb_agg_lines.cpp
 
 .PHONY : clean
 clean :
-	rm -f *~ *.o *.a *.png core $(OUTPUT)
+	rm -f *~ *.o *.a *.png *.ppm core $(OUTPUT)
 

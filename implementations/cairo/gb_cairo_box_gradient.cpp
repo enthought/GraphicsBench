@@ -1,6 +1,7 @@
 #include "gb_cairo_box_gradient.h"
+#include <utils/gb_utils_save_buffer.h>
 #include <utils/gb_utils_timer.h>
-
+#include <gb_settings.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -18,6 +19,8 @@ using std::endl;
 
 void GBCairoBoxGradientBenchmark::init()
 {
+    benchmark_name = "Cairo box gradient";
+    benchmark_file_name = "gb_cairo_box_gradient.png";
     return;
 }
 
@@ -48,11 +51,16 @@ void GBCairoBoxGradientBenchmark::render()
         cairo_fill (cr);
     }
     timer.stop();
-    cout << "Cairo lines: " << timer << endl;
+
+    print_timing(timer);
+
+    if (GB_SAVE_BENCHMARK_IMAGE)
+    {
+        gb_save_buffer(benchmark_file_name, cairo_image_surface_get_data(surface), GB_CANVAS_WIDTH, GB_CANVAS_HEIGHT, GB_CANVAS_BPP, GB_CANVAS_CAIRO_FORMAT);   
+    }
 
     cairo_pattern_destroy(gradient);
     cairo_destroy (cr);
-    cairo_surface_write_to_png (surface, "box.png");
     cairo_surface_destroy (surface);
     return;
 }

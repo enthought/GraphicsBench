@@ -1,6 +1,6 @@
 #pragma once
 
-#include <abstract/framework/gb_benchmark.h>
+#include <gb_benchmark.h>
 
 class AggContext {
 public:

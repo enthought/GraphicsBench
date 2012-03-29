@@ -4,6 +4,7 @@
 #include <gb_settings.h>
 #include <iostream>
 
+#include "agg_path_storage.h"
 #include "agg_basics.h"
 #include "agg_pixfmt_rgb.h"
 #include "agg_pixfmt_rgba.h"
@@ -21,24 +22,9 @@ using std::endl;
 
 void GBAggLineBenchmark::init()
 {
+    benchmark_name = "Agg lines";
+    benchmark_file_name = "gb_agg_lines.png";
     return;
-}
-
-bool write_ppm(const unsigned char* buf, 
-               unsigned width, 
-               unsigned height,
-               unsigned bpp,
-               const char* file_name)
-{
-    FILE* fd = fopen(file_name, "wb");
-    if(fd)
-    {
-        fprintf(fd, "P6 %d %d 255 ", width, height);
-        fwrite(buf, 1, width * height * bpp, fd);
-        fclose(fd);
-        return true;
-    }
-    return false;
 }
 
 
@@ -64,6 +50,7 @@ void GBAggLineBenchmark::render()
     renderer_base ren_base(pixelFormat);
 
     agg::line_profile_aa prof;
+
     //TODO: parametrise
     prof.width(1.0);
 
@@ -73,26 +60,29 @@ void GBAggLineBenchmark::render()
     renderer.color(agg::rgba(0, 0, 0, 1));
     rasterizer.round_cap(true);
 
+    agg::path_storage path;
+
     GBTimer timer;
     
     timer.start();
     for (counter=0; counter < app_state.metadata->num_elements; counter++)
     {
         LineSegment segment = app_state.drawdata->segments[counter];
-        rasterizer.move_to_d(segment.begin_x, segment.begin_y);
-        rasterizer.line_to_d(segment.end_x, segment.end_y);
-        rasterizer.render(false);
+        path.move_to(segment.begin_x, segment.begin_y);
+        path.line_to(segment.end_x, segment.end_y);
+        
     }
 
+    rasterizer.add_path(path);
     timer.stop();
+    print_timing(timer);
 
-    std::string filename_png("out.png");
-    std::string filename_ppm("out.ppm");
+    if (GB_SAVE_BENCHMARK_IMAGE)
+    {
+        gb_save_buffer(benchmark_file_name, data, GB_CANVAS_WIDTH, GB_CANVAS_HEIGHT, GB_CANVAS_BPP, GB_CANVAS_CAIRO_FORMAT);   
+    }
 
-    gb_save_buffer(filename_png, data, GB_CANVAS_WIDTH, GB_CANVAS_HEIGHT, GB_CANVAS_BPP, GB_CANVAS_CAIRO_FORMAT );
-    write_ppm(data, GB_CANVAS_WIDTH, GB_CANVAS_HEIGHT, GB_CANVAS_BPP, filename_ppm.c_str());
     free(data);
-    cout << timer << endl;
     return;
 }
 

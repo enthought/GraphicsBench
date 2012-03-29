@@ -1,6 +1,5 @@
 #pragma once
-
-#include <abstract/framework/gb_benchmark.h>
+#include "gb_benchmark.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <string>

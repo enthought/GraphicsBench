@@ -1,16 +1,24 @@
-CXX=clang++
-CC=clang++
+CXX=g++
+CC=g++
 
 GRAPHICS_BENCH_ROOT=../..
 COMMON_DIR=$(GRAPHICS_BENCH_ROOT)/implementations/common
 
+UNAME = $(shell uname)
+ifeq ($(UNAME), Linux)
+	LIBS += $(shell pkg-config --libs cairo) -lrt -lgbutils -L$(GRAPHICS_BENCH_ROOT)/utils
+endif
+
+ifeq ($(UNAME), Darwin)
+	LIBS += $(shell pkg-config --libs cairo) -lgbutils -L$(GRAPHICS_BENCH_ROOT)/utils
+endif
+
 CFLAGS +=-g $(shell pkg-config --cflags cairo) -I$(GRAPHICS_BENCH_ROOT) -I$(COMMON_DIR)
 LDFLAGS += -g
-LIBS += $(shell pkg-config --libs cairo) -lrt -lgbutils -L$(GRAPHICS_BENCH_ROOT)/utils
 OUTPUT = gb_cairo_main
 
 OBJECTS = gb_cairo_main.o gb_cairo_lines.o gb_cairo_box_alpha.o gb_cairo_box_gradient.o
-COMMON_OBJECTS = $(COMMON_DIR)/gb_lines.o $(COMMON_DIR)/gb_box.o
+COMMON_OBJECTS = $(COMMON_DIR)/gb_lines.o $(COMMON_DIR)/gb_box.o $(COMMON_DIR)/gb_benchmark.o
 
 all : common $(OBJECTS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o gb_cairo_main $(OBJECTS) $(COMMON_OBJECTS) $(LIBS)

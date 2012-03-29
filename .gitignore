@@ -103,3 +103,4 @@ tramp
 #GraphicsBench
 *.ppm
 *.png
+*.data

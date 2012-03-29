@@ -55,7 +55,7 @@ GBTime operator- (GBTime const& t1, GBTime const& t2)
 // Output operator
 ostream& operator<<(ostream& os, const GBTime& dst)
 {
-	os << "<GBTime milliseconds: " << dst.millis() << ">";
+	os << dst.millis() << " ms";
 	return os;
 }
 
@@ -126,7 +126,7 @@ ostream& operator<<(ostream& os, const GBTimer& dst)
 {
 	if (dst.has_run)
 	{
-		os << "<GBTimer: " << dst.elapsed() << " >"; 
+		os << dst.elapsed(); 
 	}
 	else
 	{

@@ -1,4 +1,5 @@
 #include "gb_cairo_lines.h"
+#include <utils/gb_utils_save_buffer.h>
 #include <utils/gb_utils_timer.h>
 #include <stdint.h>
 #include <assert.h>
@@ -13,6 +14,8 @@ using std::endl;
 
 void GBCairoLineBenchmark::init()
 {
+    benchmark_name = "Cairo lines";
+    benchmark_file_name = "gb_cairo_lines.png";
     return;
 }
 
@@ -37,8 +40,15 @@ void GBCairoLineBenchmark::render()
         cairo_line_to (cr, segment.end_x, segment.end_y);
         cairo_stroke (cr);
     }
+
     timer.stop();
-    cout << "Cairo lines: " << timer << endl;
+    print_timing(timer);
+
+    if (GB_SAVE_BENCHMARK_IMAGE)
+    {
+        gb_save_buffer(benchmark_file_name, cairo_image_surface_get_data(surface), GB_CANVAS_WIDTH, GB_CANVAS_HEIGHT, GB_CANVAS_BPP, GB_CANVAS_CAIRO_FORMAT);   
+    }
+    
     cairo_destroy (cr);
     cairo_surface_destroy (surface);
     return;

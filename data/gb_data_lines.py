@@ -10,19 +10,19 @@ DATA_DTYPE = dtype([('x1', POINT_DTYPE), ('y1', POINT_DTYPE), ('x2', POINT_DTYPE
 
 
 class GBLinesGenerator(object):
-    def __init__(self, binfile, screen_width, screen_height, num_lines=10**2, header_dtype=HEADER_DTYPE, data_dtype=DATA_DTYPE, dimension=2):
+    def __init__(self, binfile, screen_width, screen_height, num_data_elems=10**2, header_dtype=HEADER_DTYPE, data_dtype=DATA_DTYPE, dimension=2):
         self.screen_width = screen_width
         self.screen_height = screen_height
-        self.num_lines = num_lines
+        self.num_data_elems = num_data_elems
         self.binfile = binfile
         self.dimension = dimension
 
     def generate(self):
         start = (np.random.randint(self.screen_width), np.random.randint(self.screen_height))
-        self.binfile.header[0][0] = self.num_lines
+        self.binfile.header[0][0] = self.num_data_elems
         self.binfile.header[0][1] = self.dimension
         self.binfile.header[0][2] = POINT_DTYPE_INSTANCE.itemsize
-        for i in range(self.num_lines):
+        for i in range(self.num_data_elems):
             end = (np.random.randint(self.screen_width), np.random.randint(self.screen_height))
             self.binfile.data[i][0] = start[0]
             self.binfile.data[i][1] = start[1]
@@ -32,6 +32,7 @@ class GBLinesGenerator(object):
 
 
 if __name__ == '__main__':
-    binfile = make_binfile('gb_lines.data', HEADER_DTYPE, DATA_DTYPE)
-    datagen = GBLinesGenerator(binfile, SCREEN_X_RES, SCREEN_Y_RES)
+    num_data_elems = 10
+    binfile = make_binfile('gb_lines.data', HEADER_DTYPE, DATA_DTYPE, num_data_elems=num_data_elems)
+    datagen = GBLinesGenerator(binfile, SCREEN_X_RES, SCREEN_Y_RES, num_data_elems=num_data_elems)
     datagen.generate()
