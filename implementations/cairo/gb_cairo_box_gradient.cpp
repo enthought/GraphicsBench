@@ -37,18 +37,21 @@ void GBCairoBoxGradientBenchmark::render()
     cairo_set_line_width (cr, 1);
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_SUBPIXEL);
     cairo_set_source_rgba(cr, 0.5, 0.5, 1, 0.5);
-
-    cairo_pattern_t *gradient = cairo_pattern_create_linear(0, 0, 100, 100);
-    cairo_pattern_add_color_stop_rgba(gradient, 0, 0, 0, 1, 0.5);
-    cairo_pattern_add_color_stop_rgba(gradient, 0, 0, 1, 0, 0.5);
-    cairo_set_source(cr, gradient);
+    
 
     timer.start();
     for (counter=0; counter < app_state.metadata->num_elements; counter++)
     {
         Box box = app_state.drawdata->boxes[counter];
+
+        cairo_pattern_t *gradient = cairo_pattern_create_linear(box.x, box.y, box.x + box.width, box.y + box.height);
+        cairo_pattern_add_color_stop_rgba(gradient, 0, 0, 0, 1, 0.5);
+        cairo_pattern_add_color_stop_rgba(gradient, 0.5, 1, 1, 0, 0.5);
+        cairo_pattern_add_color_stop_rgba(gradient, 1, 1, 0, 0, 0.5);
+        cairo_set_source(cr, gradient);
         cairo_rectangle(cr, box.x, box.y, box.width, box.height);
         cairo_fill (cr);
+        cairo_pattern_destroy(gradient);
     }
     timer.stop();
 
@@ -56,10 +59,11 @@ void GBCairoBoxGradientBenchmark::render()
 
     if (GB_SAVE_BENCHMARK_IMAGE)
     {
-        gb_save_buffer(benchmark_file_name, cairo_image_surface_get_data(surface), GB_CANVAS_WIDTH, GB_CANVAS_HEIGHT, GB_CANVAS_BPP, GB_CANVAS_CAIRO_FORMAT);   
+        gb_save_buffer( benchmark_file_name, cairo_image_surface_get_data(surface), 
+                        GB_CANVAS_WIDTH, GB_CANVAS_HEIGHT, GB_CANVAS_BPP, GB_CANVAS_CAIRO_FORMAT);   
     }
 
-    cairo_pattern_destroy(gradient);
+    
     cairo_destroy (cr);
     cairo_surface_destroy (surface);
     return;
