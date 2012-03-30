@@ -6,7 +6,7 @@ COMMON_DIR=$(GRAPHICS_BENCH_ROOT)/implementations/common
 
 UNAME = $(shell uname)
 ifeq ($(UNAME), Linux)
-	LIBS += $(shell pkg-config --libs cairo) -lrt -lgbutils -L$(GRAPHICS_BENCH_ROOT)/utils
+	LIBS += $(shell pkg-config --libs cairo) -lgbutils -lrt -L$(GRAPHICS_BENCH_ROOT)/utils
 endif
 
 ifeq ($(UNAME), Darwin)

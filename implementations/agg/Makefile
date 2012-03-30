@@ -6,11 +6,11 @@ COMMON_DIR=$(GRAPHICS_BENCH_ROOT)/implementations/common
 
 UNAME = $(shell uname)
 ifeq ($(UNAME), Linux)
-	LIBS += $(shell pkg-config --libs cairo) $(shell pkg-config --libs libagg) -lrt -lgbutils
+	LIBS += -lgbutils -lrt $(shell pkg-config --libs cairo) $(shell pkg-config --libs libagg) 
 endif
 
 ifeq ($(UNAME), Darwin)
-	LIBS += $(shell pkg-config --libs cairo) $(shell pkg-config --libs libagg) -lgbutils
+	LIBS += -lgbutils $(shell pkg-config --libs cairo) $(shell pkg-config --libs libagg)
 endif
 
 CFLAGS +=-g $(shell pkg-config --cflags cairo) $(shell pkg-config --cflags libagg) -I$(GRAPHICS_BENCH_ROOT) -I$(COMMON_DIR)

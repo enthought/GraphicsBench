@@ -36,8 +36,7 @@ void GBAggLineBenchmark::render()
     agg::rendering_buffer buffer;
 
     data = (unsigned char*) malloc(GB_CANVAS_WIDTH * GB_CANVAS_HEIGHT * GB_CANVAS_BPP);
-
-    memset(data, 255, GB_CANVAS_WIDTH * GB_CANVAS_HEIGHT * GB_CANVAS_BPP);
+    memset(data, 0, GB_CANVAS_WIDTH * GB_CANVAS_HEIGHT * GB_CANVAS_BPP);
 
     buffer.attach(data, GB_CANVAS_WIDTH, GB_CANVAS_HEIGHT, GB_CANVAS_WIDTH * GB_CANVAS_BPP);
 

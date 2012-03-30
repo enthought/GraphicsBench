@@ -32,7 +32,7 @@ class GBLinesGenerator(object):
 
 
 if __name__ == '__main__':
-    num_data_elems = 10
+    num_data_elems = 10**5
     binfile = make_binfile('gb_lines.data', HEADER_DTYPE, DATA_DTYPE, num_data_elems=num_data_elems)
     datagen = GBLinesGenerator(binfile, SCREEN_X_RES, SCREEN_Y_RES, num_data_elems=num_data_elems)
     datagen.generate()

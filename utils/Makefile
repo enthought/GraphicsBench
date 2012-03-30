@@ -28,7 +28,7 @@ test : all gb_test_utils_timer.o
 gb_utils_timer.o : gb_utils_timer.h
 gb_test_utils_timer.o : gb_utils_timer.h
 gb_utils_save_buffer.o : gb_utils_save_buffer.h gb_utils_save_buffer.cpp
-	$(CC) $(CFLAGS) $(LDFLAGS) -c gb_utils_save_buffer.cpp
+	$(CC) $(CFLAGS) -c gb_utils_save_buffer.cpp
 	
 
 .PHONY : clean
