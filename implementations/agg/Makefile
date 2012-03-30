@@ -17,7 +17,7 @@ CFLAGS +=-g $(shell pkg-config --cflags cairo) $(shell pkg-config --cflags libag
 LDFLAGS += -L$(GRAPHICS_BENCH_ROOT)/utils
 OUTPUT = gb_agg_main
 
-OBJECTS = gb_agg_main.o gb_agg_lines.o
+OBJECTS = gb_agg_main.o gb_agg_lines.o gb_agg_lines_scanline.o
 COMMON_OBJECTS = $(COMMON_DIR)/gb_lines.o $(COMMON_DIR)/gb_box.o $(COMMON_DIR)/gb_benchmark.o
 
 all : common $(OBJECTS)
@@ -31,6 +31,9 @@ gb_agg_main.o : gb_agg_main.cpp
 
 gb_agg_lines.o : gb_agg_lines.cpp
 	$(CC) -c $(CFLAGS) $(LDFLAGS) gb_agg_lines.cpp
+
+gb_agg_lines_scanline.o : gb_agg_lines_scanline.cpp
+	$(CC) -c $(CFLAGS) $(LDFLAGS) gb_agg_lines_scanline.cpp
 
 .PHONY : clean
 clean :
