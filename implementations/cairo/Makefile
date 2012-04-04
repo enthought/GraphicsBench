@@ -6,18 +6,18 @@ COMMON_DIR=$(GRAPHICS_BENCH_ROOT)/implementations/common
 
 UNAME = $(shell uname)
 ifeq ($(UNAME), Linux)
-	LIBS += $(shell pkg-config --libs cairo) -lgbutils -lrt -L$(GRAPHICS_BENCH_ROOT)/utils
+	LIBS += $(shell pkg-config --libs cairo QtGui) -lgbutils -lrt -L$(GRAPHICS_BENCH_ROOT)/utils
 endif
 
 ifeq ($(UNAME), Darwin)
 	LIBS += $(shell pkg-config --libs cairo) -lgbutils -L$(GRAPHICS_BENCH_ROOT)/utils
 endif
 
-CFLAGS +=-g $(shell pkg-config --cflags cairo) -I$(GRAPHICS_BENCH_ROOT) -I$(COMMON_DIR)
+CFLAGS += $(shell pkg-config --cflags cairo QtGui) -I$(GRAPHICS_BENCH_ROOT) -I$(COMMON_DIR)
 LDFLAGS += -g
 OUTPUT = gb_cairo_main
 
-OBJECTS = gb_cairo_main.o gb_cairo_lines.o gb_cairo_box_alpha.o gb_cairo_box_gradient.o gb_cairo_memmove.o
+OBJECTS = gb_cairo_main.o gb_cairo_lines.o gb_cairo_box_alpha.o gb_cairo_box_gradient.o gb_cairo_memmove.o moc_gb_cairo_memmove.o
 COMMON_OBJECTS = $(COMMON_DIR)/gb_lines.o $(COMMON_DIR)/gb_box.o $(COMMON_DIR)/gb_benchmark.o
 
 all : common $(OBJECTS)
@@ -40,6 +40,12 @@ gb_cairo_box_gradient.o : gb_cairo_box_gradient.cpp
 
 gb_cairo_memmove.o : gb_cairo_memmove.cpp
 	$(CC) -c $(CFLAGS) $(LDFLAGS) gb_cairo_memmove.cpp
+
+moc_gb_cairo_memmove.o : gb_cairo_memmove.h gb_cairo_memmove.cpp
+	moc -o moc_gb_cairo_memmove.cpp gb_cairo_memmove.h
+	$(CC) -c $(CFLAGS) $(LDFLAGS) moc_gb_cairo_memmove.cpp
+	
+
 
 
 .PHONY : clean
