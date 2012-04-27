@@ -10,7 +10,7 @@ ifeq ($(UNAME), Linux)
 endif
 
 ifeq ($(UNAME), Darwin)
-	LIBS += $(shell pkg-config --libs cairo) -lgbutils -L$(GRAPHICS_BENCH_ROOT)/utils
+	LIBS += $(shell pkg-config --libs cairo QtGui) -lgbutils -L$(GRAPHICS_BENCH_ROOT)/utils
 endif
 
 CFLAGS += $(shell pkg-config --cflags cairo QtGui) -I$(GRAPHICS_BENCH_ROOT) -I$(COMMON_DIR)

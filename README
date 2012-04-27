@@ -1,1 +1,53 @@
 Graphics benchmark to compare performance of various 2d Drawing API.
+
+
+OSX build instructions
+
+1) Install git if not available
+http://git-scm.com/
+
+2) git clone https://github.com/enthought/GraphicsBench.git
+
+3) Command line tools for Xcode
+http://kennethreitz.com/xcode-gcc-and-homebrew.html
+
+4) Install Homebrew
+http://mxcl.github.com/homebrew/
+
+5) Install cairo if not available
+brew install cairo
+
+6) Install agg if not available
+
+Agg does not compile with clang and homebrew uses clang with no apparent way to override the compiler. So we need to install agg ourselves.
+curl -o agg.tar.gz http://www.antigrain.com/agg-2.5.tar.gz
+tar xvf agg.tar.gz
+cd agg-2.5/
+make
+cp src/libagg.a /usr/local/lib/
+cp -r include /usr/local/
+
+# We need to generate the pkg-config file
+cp Makefile.in.Darwin Makefile.in
+sh autogen.sh
+cp libagg.pc /usr/local/lib/pkgconfig/
+
+
+7) Install qt
+brew install qt
+
+7) 
+cd GRAPHICS_BENCH_ROOT
+cd utils
+make
+cd GRAPHICS_BENCH_ROOT
+cd data
+make
+
+cd GRAPHICS_BENCH_ROOT
+cd implementations/cairo
+make
+
+cd GRAPHICS_BENCH_ROOT
+cd implementations/agg
+make
